@@ -1,6 +1,8 @@
 package com.youtics.labancamdp;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +49,17 @@ public class MainActivity extends AppCompatActivity {
         labancaria.setWebViewClient(new MyWebViewClient());
         labancaria.setVerticalScrollBarEnabled(false);
         labancaria.loadUrl(url);
+        mySwipeRefreshLayout = this.findViewById(R.id.swipeContainer);
+        mySwipeRefreshLayout.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        findViewById(R.id.loadeWebView).setVisibility(View.VISIBLE);
+                        labancaria.reload();
+                        mySwipeRefreshLayout.setRefreshing(false);
+                    }
+                }
+        );
     }
 
     private class MyWebViewClient extends WebViewClient
@@ -61,6 +74,31 @@ public class MainActivity extends AppCompatActivity {
         {
             findViewById(R.id.loadeWebView).setVisibility(View.GONE);
             findViewById(R.id.webview).setVisibility(View.VISIBLE);
+        }
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url)
+        {
+            if(url.indexOf("tel:") > -1)
+            {
+                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(url)));
+                return true;
+            }else if(url.indexOf("out:") > -1)
+            {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url.replace("out:","" ))));
+                return true;
+            }else if(url.indexOf("mailito:") > -1)
+            {
+                startActivity(new Intent(Intent.ACTION_SENDTO, Uri.parse(url)));
+                return true;
+            }else if(url.startsWith("https://www.youtube.com"))
+            {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                return true;
+            }else
+            {
+                view.loadUrl(url);
+                return true;
+            }
         }
     }
 }
