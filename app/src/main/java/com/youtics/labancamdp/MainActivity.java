@@ -5,27 +5,36 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.onesignal.OneSignal;
+
 public class MainActivity extends AppCompatActivity {
 
     String url="http://controlbeach.com.ar/bancaria/";
     SwipeRefreshLayout mySwipeRefreshLayout;
     WebView labancaria;
+    private static final String ONESIGNAL_APP_ID = "7f9b86e1-3da0-40d6-8bbf-6a92b77c0d6d";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Enable verbose OneSignal logging to debug issues if needed.
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        // OneSignal Initialization
+        OneSignal.initWithContext(this);
+        OneSignal.setAppId(ONESIGNAL_APP_ID);
+
         //Oculto la barra superior
         getSupportActionBar().hide();
         labancaria = (WebView) findViewById(R.id.webview);
