@@ -18,7 +18,7 @@ import com.onesignal.OneSignal;
 
 public class MainActivity extends AppCompatActivity {
 
-    String url="http://controlbeach.com.ar/bancaria/";
+    String url="http://controlbeach.com.ar/flowbancaria/";
     SwipeRefreshLayout mySwipeRefreshLayout;
     WebView labancaria;
     private static final String ONESIGNAL_APP_ID = "7f9b86e1-3da0-40d6-8bbf-6a92b77c0d6d";
